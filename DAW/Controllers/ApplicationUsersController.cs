@@ -40,11 +40,15 @@ namespace DAW.Controllers
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
             }
 
+            if (search == "")
+            {
+                ViewBag.SearchString = search;
+                ViewBag.Users = null;
+                return View();
+            }
             int length = search.Length;
 
-            List<string> usersId = db.Users.Where(u => u.FirstName == search || u.LastName == search || u.FirstName + ' ' + u.LastName == search
-                                || u.FirstName.Substring(0, length) == search
-                                || u.LastName.Substring(0, length) == search)
+            List<string> usersId = db.Users.Where(u => u.FirstName.Contains(search) || u.LastName.Contains(search) || (u.LastName + ' ' + u.FirstName).Contains(search) || (u.FirstName + ' ' + u.LastName).Contains(search))
                                 .OrderByDescending(u => u.UserName).Select(u => u.Id).ToList();
             ViewBag.SearchString = search;
             ViewBag.Users = db.Users.Include(u => u.Posts).Where(u => usersId.Contains(u.Id)).OrderByDescending(u => u.UserName);

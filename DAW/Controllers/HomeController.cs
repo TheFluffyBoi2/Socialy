@@ -62,7 +62,7 @@ namespace DAW.Controllers
                 var fromFriends = db.Posts.Where(p => friendsId1.Contains(p.UserId) && !(p is GroupPost)).Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.User).OrderByDescending(p => p.Date).ToList();
                 List<string> blockedById = db.UserRelationships.Where(ur => ur.UserId2 == _userManager.GetUserId(User) && ur.Relation == "Blocked")
                                 .Select(ur => ur.UserId1).ToList();
-                List<string> publicUsersId = db.Users.Where(u => u.IsPublic == true).Select(u => u.Id).ToList();
+                List<string> publicUsersId = db.Users.Where(u => u.IsPublic == true && !(friendsId1.Contains(u.Id))).Select(u => u.Id).ToList();
                 publicUsersId.RemoveAll(i => i == _userManager.GetUserId(User));
                 foreach (var i in blockedById)
                 {

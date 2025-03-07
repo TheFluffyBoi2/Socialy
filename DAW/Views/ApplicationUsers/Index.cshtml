@@ -1,18 +1,21 @@
 ﻿<h2>Search results</h2>
 
 <div class="container mt-4">
-    @foreach (var user in ViewBag.Users)
+    @if (ViewBag.Users != null)
     {
-        <div class="card p-10 w-25 mb-2">
-            <a class="text-decoration-none text-reset" href="@Url.Action("Show", new { id = user.Id })">
-                <div class="d-flex align-items-center">
-                    <img src="@Url.Content(user.ProfilePicture)" alt="Profile Picture" class="profile-icon rounded-circle img-fluid">
-                    <div class="ms-3">
-                        <h5>@user.FirstName @user.LastName</h5>
-                        <p class="text-muted">@user.Bio</p>
+        @foreach (var user in ViewBag.Users)
+        {
+            <div class="card p-10 w-25 mb-2">
+                <a class="text-decoration-none text-reset" href="@Url.Action("Show", new { id = user.Id })">
+                    <div class="d-flex align-items-center">
+                        <img src="@Url.Content(user.ProfilePicture)" alt="Profile Picture" class="profile-icon rounded-circle img-fluid">
+                        <div class="ms-3">
+                            <h5>@user.FirstName @user.LastName</h5>
+                            <p class="text-muted">@user.Bio</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        }        
     }
 </div>
